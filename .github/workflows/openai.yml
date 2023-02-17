@@ -1,22 +1,14 @@
-name: OpenAI Action
 on:
-  push:
-    branches:
-      - main
+  issue_comment:
+    types: [created]
 jobs:
-  deploy:
-    name: OpenAI
+  action:
     runs-on: ubuntu-latest
+    if: github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/openai ')
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14
-      - name: OpenAI
-        uses: riccardolinares/openai-commit@v0.0.1
+      - name: OpenAI Chat
+        uses: fukumone/openai-chat@v0.0.1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          openai-prompt: "Write a description for this git commit: \n${{ github.event.head_commit.message }}"
-        id: openai
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-comment: ${{ github.event.comment.body }}
