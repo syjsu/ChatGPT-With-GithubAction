@@ -4,7 +4,7 @@ on:
 jobs:
   action:
     runs-on: ubuntu-latest
-    if: github.event_name == 'issue_comment' && startsWith(github.event.comment.body, '/openai ')
+    if: github.event_name == 'issue_comment')
     steps:
       - name: OpenAI Chat
         uses: fukumone/openai-chat@v0.0.1
